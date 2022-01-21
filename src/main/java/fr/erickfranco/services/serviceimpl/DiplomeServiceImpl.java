@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import fr.erickfranco.configuration.exception.BadRequestExcepton;
 import fr.erickfranco.model.Diploma;
 import fr.erickfranco.repositories.DiplomaRepository;
 import fr.erickfranco.services.dto.DiplomaDto;
@@ -25,25 +26,35 @@ public class DiplomeServiceImpl implements DiplomaInter {
 	}
 
 	@Override
-	public DiplomaDto save(DiplomaDto diplomaDto) {
+	public DiplomaDto createDiploma(DiplomaDto diplomaDto) {
 		Diploma diploma = diplomaMapper.diplomaToDiplomaDto(diplomaDto);
+
+		/*
+		 * if (diplomaRepository.findById(diplomaDto.getIdDiploma()).isPresent()) {
+		 * throw new DiplomaAlreadyExistException("Resource already exists"); }
+		 */
 		diploma = diplomaRepository.save(diploma);
+
 		return diplomaMapper.diplomaDtoToDiplome(diploma);
 	}
 
 	@Override
-	public List<DiplomaDto> findAll() {
+	public List<DiplomaDto> findDiplomas() {
 		return diplomaRepository.findAll().stream().map(diplomaMapper::diplomaDtoToDiplome)
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Optional<DiplomaDto> findOne(Long id) {
+	public Optional<DiplomaDto> findByDiplomaId(Long id) {
+
+		if (!diplomaRepository.existsById(id)) {
+			throw new BadRequestExcepton("Le Diplôme avec l'id " + id + " n'existe pas ");
+		}
 		return diplomaRepository.findById(id).map(diplomaMapper::diplomaDtoToDiplome);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void deleteDiploma(Long id) {
 		diplomaRepository.deleteById(id);
 	}
 

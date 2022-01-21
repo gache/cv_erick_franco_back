@@ -7,12 +7,12 @@ import fr.erickfranco.services.dto.DiplomaDto;
 
 public interface DiplomaInter {
 
-	DiplomaDto save(DiplomaDto diplomaDto);
+	public DiplomaDto createDiploma(DiplomaDto diplomaDto);
 
-	List<DiplomaDto> findAll();
+	public List<DiplomaDto> findDiplomas();
 
-	Optional<DiplomaDto> findOne(Long id);
+	public Optional<DiplomaDto> findByDiplomaId(Long id);
 
-	void delete(Long id);
+	public void deleteDiploma(Long id);
 
 }
